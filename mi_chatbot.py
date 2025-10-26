@@ -1,5 +1,6 @@
 import streamlit as st
 import openai
+import os  # Para leer la API Key desde Secrets
 
 # Configuración de la página
 st.set_page_config(
@@ -8,8 +9,9 @@ st.set_page_config(
     layout="wide"
 )
 
-# Tu API Key de OpenAI
-openai.api_key = "TU_API_KEY"  # <- reemplaza esto con tu API Key
+# API Key de OpenAI desde Secrets
+# IMPORTANTE: crea un Secret llamado OPENAI_API_KEY en Streamlit Cloud
+openai.api_key = os.environ["OPENAI_API_KEY"]
 
 # Crear historial si no existe
 if "historial" not in st.session_state:
@@ -35,7 +37,10 @@ if user_input:
     )
 
     # Guardar respuesta de la IA
-    st.session_state.historial.append({"role": "assistant", "content": response['choices'][0]['message']['content']})
+    st.session_state.historial.append({
+        "role": "assistant",
+        "content": response['choices'][0]['message']['content']
+    })
 
 # Mostrar solo los últimos 20 mensajes en burbujas estilo chat
 for mensaje in st.session_state.historial[-20:]:
