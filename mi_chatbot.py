@@ -1,4 +1,8 @@
-import streamlit as st
+import streamlit as stst.set_page_config(
+    page_title="Mi Chatbot IA",
+    page_icon="💬",
+    layout="wide"  # Para usar todo el ancho disponible
+)
 import openai# Guardar todos los mensajes en la sesión
 if "historial" not in st.session_state:
     st.session_state.historial = []
