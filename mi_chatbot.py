@@ -20,7 +20,8 @@ mensajes = [
 
 # Paso 2: mensaje del usuario
 user_input = # Pedimos al usuario que escriba un mensaje
-user_input = st.text_input("Escribe tu mensaje:")
+st.markdown("💬 **Escribe aquí tu mensaje:**")
+user_input = st.text_input("", key="entrada_usuario")
 
 # Si el usuario escribe algo
 if user_input:
