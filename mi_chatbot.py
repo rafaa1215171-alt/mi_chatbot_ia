@@ -3,7 +3,7 @@ import streamlit as stst.set_page_config(
     page_icon="💬",
     layout="wide"
 )
-)
+
 import openai# Guardar todos los mensajes en la sesión
 if "historial" not in st.session_state:
     st.session_state.historial = []
