@@ -15,7 +15,13 @@ mensajes = [
 ]
 
 # Paso 2: mensaje del usuario
+user_input = # Pedimos al usuario que escriba un mensaje
 user_input = st.text_input("Escribe tu mensaje:")
+
+# Si el usuario escribe algo
+if user_input:
+    # Guardamos el mensaje en el historial de la sesión
+    st.session_state.historial.append({"role": "user", "content": user_input})
 if user_input:
     mensajes.append({"role": "user", "content": user_input})
     
