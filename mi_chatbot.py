@@ -1,56 +1,45 @@
-import streamlit as stst.set_page_config(
+import streamlit as st
+import openai
+
+# Configuración de la página
+st.set_page_config(
     page_title="Mi Chatbot IA",
     page_icon="💬",
     layout="wide"
 )
 
-import openai# Guardar todos los mensajes en la sesión
+# Tu API Key de OpenAI
+openai.api_key = "TU_API_KEY"  # <- reemplaza esto con tu API Key
+
+# Crear historial si no existe
 if "historial" not in st.session_state:
     st.session_state.historial = []
 
-openai.api_key = "TU_API_KEY"
+# Título de la app
+st.title("💬 Mi Chatbot IA")
 
-# --- Aquí empieza la conversación ---
-# Paso 1: mensaje inicial de personalidad
-mensajes = [
-    {
-        "role": "system",
-        "content": "Eres un asistente divertido y amigable que responde con humor y claridad."
-    }
-]
-
-# Paso 2: mensaje del usuario
-user_input = # Pedimos al usuario que escriba un mensaje
+# Caja de texto para el usuario
 st.markdown("💬 **Escribe aquí tu mensaje:**")
 user_input = st.text_input("", key="entrada_usuario")
 
 # Si el usuario escribe algo
 if user_input:
-    # Guardamos el mensaje en el historial de la sesión
+    # Guardar mensaje del usuario
     st.session_state.historial.append({"role": "user", "content": user_input})
-if user_input:
-    mensajes.append({"role": "user", "content": user_input})# Llamada a OpenAI usando todo el historial
-response = openai.ChatCompletion.create(
-    model="gpt-3.5-turbo",
-    messages=[{"role": "system", "content": "Eres un asistente divertido y amigable."}] + st.session_state.historial,
-    temperature=0.7
-)
 
-# Guardar la respuesta de la IA en el historial
-st.session_state.historial.append({"role": "assistant", "content": response['choices'][0]['message']['content']})
-
-    
-    # Paso 3: llamar a OpenAI
+    # Llamar a OpenAI con todo el historial
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
-        messages=mensajes,
+        messages=[{"role": "system", "content": "Eres un asistente divertido y amigable."}] + st.session_state.historial,
         temperature=0.7
     )
-    st.write(response['choices'][0]['message']['content']) 
-# Pega aquí TODO el código de Streamlit que escribiste arriba# Mostrar todo el historial en burbujas de chat# Mostrar solo los últimos 20 mensajes
+
+    # Guardar respuesta de la IA
+    st.session_state.historial.append({"role": "assistant", "content": response['choices'][0]['message']['content']})
+
+# Mostrar solo los últimos 20 mensajes en burbujas estilo chat
 for mensaje in st.session_state.historial[-20:]:
     if mensaje["role"] == "user":
         st.chat_message("user").write(mensaje["content"])
     else:
         st.chat_message("assistant").write(mensaje["content"])
-
