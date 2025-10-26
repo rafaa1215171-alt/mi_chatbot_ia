@@ -41,4 +41,9 @@ st.session_state.historial.append({"role": "assistant", "content": response['cho
         temperature=0.7
     )
     st.write(response['choices'][0]['message']['content']) 
-# Pega aquí TODO el código de Streamlit que escribiste arriba
+# Pega aquí TODO el código de Streamlit que escribiste arriba# Mostrar todo el historial en burbujas de chat
+for mensaje in st.session_state.historial:
+    if mensaje["role"] == "user":
+        st.chat_message("user").write(mensaje["content"])
+    else:
+        st.chat_message("assistant").write(mensaje["content"])
