@@ -9,8 +9,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# API Key de OpenAI desde Secrets
-# IMPORTANTE: crea un Secret llamado OPENAI_API_KEY en Streamlit Cloud
+# Leer API Key desde Secrets
 openai.api_key = os.environ["OPENAI_API_KEY"]
 
 # Crear historial si no existe
@@ -20,31 +19,24 @@ if "historial" not in st.session_state:
 # Título de la app
 st.title("💬 Mi Chatbot IA")
 
-# Caja de texto para el usuario
-st.markdown("💬 **Escribe aquí tu mensaje:**")
-user_input = st.text_input("", key="entrada_usuario")
+# Caja de texto para que el usuario escriba
+user_input = st.text_input("Escribe tu mensaje aquí:", key="entrada_usuario")
 
-# Si el usuario escribe algo
 if user_input:
-    # Guardar mensaje del usuario
+    # Guardar el mensaje del usuario
     st.session_state.historial.append({"role": "user", "content": user_input})
 
-    # Llamar a OpenAI con todo el historial
+    # Llamar a OpenAI para obtener la respuesta
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[{"role": "system", "content": "Eres un asistente divertido y amigable."}] + st.session_state.historial,
         temperature=0.7
     )
 
-    # Guardar respuesta de la IA
+    # Guardar la respuesta de la IA
     st.session_state.historial.append({
         "role": "assistant",
         "content": response['choices'][0]['message']['content']
     })
 
-# Mostrar solo los últimos 20 mensajes en burbujas estilo chat
-for mensaje in st.session_state.historial[-20:]:
-    if mensaje["role"] == "user":
-        st.chat_message("user").write(mensaje["content"])
-    else:
-        st.chat_message("assistant").write(mensaje["content"])
+# Mostrar los últimos 20 mensajes en estilo
