@@ -1,5 +1,7 @@
 import streamlit as st
-import openai
+import openai# Guardar todos los mensajes en la sesión
+if "historial" not in st.session_state:
+    st.session_state.historial = []
 
 openai.api_key = "TU_API_KEY"
 
